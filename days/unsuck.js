@@ -78,6 +78,17 @@ function toObject(array, key) {
     return o;
 }
 
+export function zip(a, b) {
+    const result = [];
+    const minLength = Math.min(a.length, b.length);
+
+    for (let i = 0; i < minLength; i++) {
+        result.push([a[i], b[i]]);
+    }
+
+    return result;
+}
+
 const applyToGen = {
     by,
     freq,
@@ -95,6 +106,7 @@ const applyToArr = {
     freq,
     sum,
     toObject,
+    zip,
 };
 
 const applyToObject = {

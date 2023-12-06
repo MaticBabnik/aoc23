@@ -18,6 +18,7 @@ declare interface Array<T> {
 
 declare interface Array<T extends string | number> {
     sum(): T;
+    zip(b: T): T;
 }
 
 declare interface Object {
