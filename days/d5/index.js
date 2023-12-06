@@ -35,7 +35,5 @@ function res2(range, maps) {
 
 console.log(
     maps.reduce((p, c) => p.map((x) => res(x, c)), seeds).sort((a, b) => a - b)[0],
-    maps.reduce(
-        (p, c) => p.flatMap((x) => res2(x, c)), seeds.by(2).collect()
-    ).sort((a, b) => a[0] - b[0])[0][0]
+    maps.reduce((p, c) => p.flatMap((x) => res2(x, c)), seeds.by(2).collect()).sort((a, b) => a[0] - b[0])[0][0]
 );
