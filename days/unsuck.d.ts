@@ -31,7 +31,7 @@ declare interface Generator<T, TReturn, TNext> {
     filter<TOut>(
         fn: (val: TNext) => boolean
     ): Generator<unknown, undefined, TOut>;
-    find(fn: (val: TNext) => boolean): TNext;
+    find(fn: (val: TNext, index: number) => boolean): TNext;
     reduce<TOut>(fn: (acc: TOut, val: TNext) => TNext, acc: TOut): TOut;
     collect(): TNext[];
     freq(): Record<TNext, number>;

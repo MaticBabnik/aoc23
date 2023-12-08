@@ -23,9 +23,10 @@ function freq(i) {
     return f;
 }
 
-function* map(i, mapper) {
-    for (let x of i) {
-        yield mapper(x);
+function* map(me, mapper) {
+    let i = 0;
+    for (let x of me) {
+        yield mapper(x, i++);
     }
 }
 function* filter(i, predicate) {
@@ -35,11 +36,10 @@ function* filter(i, predicate) {
         }
     }
 }
-function* find(i, predicate) {
-    for (let x of i) {
+function find(me, predicate) {
+    for (let x of me) {
         if (predicate(x)) {
-            yield x;
-            return;
+            return x;
         }
     }
 }

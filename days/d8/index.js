@@ -1,48 +1,18 @@
 import { input } from "../unsuck.js";
 
-const [is, mm] = input("input", "\n\n"),
-    m = mm.split`\n`.map(x => x.match(/[A-Z0-9]{3}/g)).toObject(0)
-
-function* where() {
+function* loop(t) {
     while (true) {
-        for (let a of is) {
+        for (let a of t) {
             yield a;
         }
     }
 }
 
-function go(at = 'AAA') {
-    let i = 0;
-    const aw = at;
-    for (let w of where()) {
-        at = m[at][w == 'R' ? 2 : 1];
-        i++
-        if (aw == 'AAA' && at == 'ZZZ' || at.endsWith('Z')) return i;
-    }
-}
+const [is, mm] = input("input", "\n\n"),
+    m = mm.split`\n`.map((x) => x.match(/[A-Z0-9]{3}/g)).toObject(0),
+    gcd = (a, b) => (b === 0 ? a : gcd(b, a % b)), lcm = (a, b) => (a * b) / gcd(a, b),
+    go = (at = 'AAA') => loop(is).map((x, i) => [at = m[at][x == "R" ? 2 : 1], i + 1]).find(y => y[0].endsWith('Z'))[1]
 
-function gcd(a, b) {
-    return b === 0 ? a : gcd(b, a % b);
-}
-
-// Function to calculate the LCM of two numbers
-function lcm(a, b) {
-    return (a * b) / gcd(a, b);
-}
-
-// Function to calculate the LCM of an array of integers
-function calculateLCM(arr) {
-    if (arr.length < 2) {
-        throw new Error("Array should have at least two integers to calculate LCM.");
-    }
-
-    let result = arr[0];
-    for (let i = 1; i < arr.length; i++) {
-        result = lcm(result, arr[i]);
-    }
-
-    return result;
-}
-
-
-console.log(go(), calculateLCM(Object.values(m).map(x => x[0]).filter(y => y.endsWith('A')).map(x => go(x))))
+console.log(
+    go(), Object.values(m).filter(x => x[0].endsWith("A")).map(y => go(y[0])).reduce(lcm)
+);
