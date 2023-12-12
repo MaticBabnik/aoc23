@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 
-function* by(i, n) {
+function* by(i, n, remainder = true) {
     let c = 0;
     let a = [];
     for (let x of i) {
@@ -12,6 +12,7 @@ function* by(i, n) {
             c = 0;
         }
     }
+    if (remainder && a.length != 0) yield a;
 }
 
 function freq(i) {
