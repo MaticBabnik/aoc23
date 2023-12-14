@@ -5,7 +5,7 @@ function flip(a) {
     return [...Array(w)].map((_, x) => [...Array(h)].map((_, y) => a[y][x]))
 }
 
-let p = flip(input("inputt copy", '\n', ''));
+let p = flip(input("input", '\n', ''));
 
 let dir = 0;
 
@@ -14,7 +14,7 @@ function move(a) {
 }
 
 function rotate() {
-    p = flip(p).map(x => x.reverse())
+    p = flip(p.map(x => x.reverse()))
     dir++;
     if (dir > 3) dir = 0;
 }
@@ -24,28 +24,42 @@ function score(x) {
     return x.map(x => x.reduce((p, c, i, a) => p + (c == 'O' ? a.length - i : 0), 0)).sum()
 }
 
-console.log(score(move(p)));
+// console.log(score(move(p)));
 
 const o = {};
 
-for (let i = 0; i < 1000000000; i++) {
-    // console.log(p.map(x => x.join('')).join('\n'), '\n')
-    rotate();
-    p = move(p)
-    const s = score(p) * 10 + dir;
-    if (s in o) {
-        console.log('cycle @', i)
+let cy = 0;
+let cys = 0;
+for (let n = 1; n < 10000; n++) {
+    for (let i = 0; i < 4; i++) {
+        p = move(p)
+        rotate();
+    }
+
+    const st = p.map(x => x.join('')).join('')
+    const s = score(p);
+    // console.log(s)
+
+    p = flip(p)
+    // console.log(p.map(x => x.join(' ')).join('\n'), '\n')
+    p = flip(p)
+
+    if (st in o) {
+        console.log(`cycle`, n, o[st]);
+        cy = n - o[st];
+        cys = o[st];
         break;
     }
-    o[s] = true;
+    o[st] = n;
 }
 
-const dirToBe = 1000000000 % 4;
 
-while (dir != dirToBe) {
-    rotate();
-    p = move(p)
+const g = (1_000_000_000 - cys) % cy
+for (let n = 0; n < g; n++) {
+    for (let i = 0; i < 4; i++) {
+        p = move(p)
+        rotate();
+    }
 }
-
 
 console.log(score(p));
